@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/account_list_row_height" >
+
+    <ToggleButton
+        android:id="@+id/accountToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp" />
+
+    <ImageView
+        android:id="@+id/accountProtoIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/accountToggleButton"
+        android:contentDescription="@null"
+        android:src="@drawable/jabber_logo" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/accountProtoIcon"
+        android:gravity="center|left" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/accountName"
+            android:layout_marginTop="3dp"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/accountStatusIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/jabber_status_phone" />
+
+            <TextView
+                android:id="@+id/accountStatus"
+                style="@style/MediumFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/accountStatusIcon"
+                android:gravity="center_vertical"
+                android:text="@string/service_gui_OFFLINE" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/accountName"
+            style="@style/MediumFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

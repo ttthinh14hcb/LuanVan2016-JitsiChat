@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_mainView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
+
+    <FrameLayout
+        android:id="@+id/act_contactListFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/act_main_tabHost" >
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/act_main_tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_alignParentBottom="true" >
+            
+
+        <ImageButton
+            android:id="@+id/ibtn_main_chat"
+            style="?android:attr/buttonBarButtonStyle"
+	        android:layout_width="0dp"
+	        android:layout_height="@dimen/actionbar_height"
+	        android:layout_gravity="center_horizontal"
+            android:src="@android:drawable/btn_star"
+            android1:contentDescription="@string/main_chat"
+	        android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp" />
+        
+        <ImageButton
+            android:id="@+id/ibtn_main_contact"
+            style="?android:attr/buttonBarButtonStyle"
+	        android:layout_width="0dp"
+	        android:layout_height="@dimen/actionbar_height"
+	        android:layout_gravity="center_horizontal"
+            android:src="@android:drawable/btn_star"
+            android1:contentDescription="@string/main_contact"
+	        android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp" />
+        <ImageButton
+            android:id="@+id/ibtn_main_calls"
+            style="?android:attr/buttonBarButtonStyle"
+	        android:layout_width="0dp"
+	        android:layout_height="@dimen/actionbar_height"
+	        android:layout_gravity="center_horizontal"
+            android:src="@android:drawable/btn_star"
+            android1:contentDescription="@string/main_call"
+	        android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp" />
+	</LinearLayout>
+
+</RelativeLayout>
