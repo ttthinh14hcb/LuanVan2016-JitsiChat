@@ -4,10 +4,4 @@
     <item android:id="@+id/switch_camera"
           android:title="[Camera name]">
     </item>
-    <item android:id="@+id/rota_left_playback"
-          android:title="Rotate Left">
-    </item>
-    <item android:id="@+id/rota_right_playback"
-          android:title="Rotate Right">
-    </item>
 </menu>

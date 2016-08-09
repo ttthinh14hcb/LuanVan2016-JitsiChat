@@ -136,6 +136,17 @@ public class ReceivedCallActivity
                 answerCall(call, false);
             }
         });
+        
+        /*new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+            	autoAnswerCall(call, false);
+            }
+         }.start();*/
     }
 
     /**
@@ -171,6 +182,29 @@ public class ReceivedCallActivity
                                 .createVideoCallIntent(
                                         ReceivedCallActivity.this,
                                         callIdentifier);
+
+                videoCall.putExtra(CallManager.CALL_AUTO_ANSWER, "0");
+                startActivity(videoCall);
+                finish();
+            }
+        });
+    }
+    
+    private void autoAnswerCall(final Call call, boolean useVideo)
+    {
+        CallManager.answerCall(call, useVideo);
+
+        runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
+                Intent videoCall
+                        = VideoCallActivity
+                                .createVideoCallIntent(
+                                        ReceivedCallActivity.this,
+                                        callIdentifier);
+
+                videoCall.putExtra(CallManager.CALL_AUTO_ANSWER, "1");        		
                 startActivity(videoCall);
                 finish();
             }

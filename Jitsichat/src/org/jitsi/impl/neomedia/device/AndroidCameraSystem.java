@@ -25,7 +25,7 @@ import android.view.*;
 
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+//import org.jitsi.*;
 import org.jitsi.android.*;
 import org.jitsi.android.util.java.awt.*;
 import org.jitsi.impl.neomedia.codec.video.*;
@@ -44,6 +44,7 @@ import java.util.*;
  *
  * @author Pawel Domas
  */
+@SuppressWarnings("deprecation")
 public class AndroidCameraSystem
         extends DeviceSystem
 {

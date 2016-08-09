@@ -36,7 +36,6 @@ import javax.media.renderer.*;
  *
  * @author Pawel Domas
  */
-@SuppressWarnings("unused")
 public class SurfaceRenderer
     extends AbstractRenderer<VideoFormat>
     implements VideoRenderer

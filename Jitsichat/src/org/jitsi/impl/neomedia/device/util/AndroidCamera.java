@@ -220,7 +220,7 @@ public class AndroidCamera
             }
         }
         if(selectedCamera != null)
-        {
+        {        	
             devConfig.setVideoCaptureDevice(selectedCamera, true);
             return selectedCamera;
         }

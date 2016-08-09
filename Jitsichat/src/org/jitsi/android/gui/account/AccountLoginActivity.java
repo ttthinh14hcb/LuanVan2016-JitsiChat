@@ -19,6 +19,7 @@ package org.jitsi.android.gui.account;
 
 import android.content.*;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import net.java.sip.communicator.service.gui.*;
 import net.java.sip.communicator.service.protocol.*;
@@ -52,6 +53,9 @@ public class AccountLoginActivity extends ExitMenuActivity implements
 	 */
 	public static final String PASSWORD = "Password";
 
+	
+	private static final String TAG_ACC_LOGIN = "Tag_Acc_Login";
+	private static final String TAG_ACC_REG = "Tag_Acc_Reg";
 	/**
 	 * Called when the activity is starting. Initializes the corresponding call
 	 * interface.
@@ -74,9 +78,16 @@ public class AccountLoginActivity extends ExitMenuActivity implements
 			String password = getIntent().getStringExtra(PASSWORD);
 			AccountLoginFragment accountLogin = AccountLoginFragment
 					.createInstance(login, password);
-
+			
 			getSupportFragmentManager().beginTransaction()
 					.add(android.R.id.content, accountLogin).commit();
+			
+			/*FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		    fragmentTransaction.add(android.R.id.content, accountLogin, TAG_ACC_LOGIN);
+		    fragmentTransaction.add(android.R.id.content, accountRegister, TAG_ACC_REG);
+		    fragmentTransaction.commit();
+		    
+		    switchToAccLogin();*/
 		}
 	}
 
@@ -129,13 +140,13 @@ public class AccountLoginActivity extends ExitMenuActivity implements
 				break;
 			}
 		}
+		
 		if (selectedWizard == null) {
 			logger.warn("No wizard found for protocol name: " + protocolName);
 			return null;
 		}
 		try {
 			selectedWizard.setModification(false);
-
 			return selectedWizard.signin(userName, password);
 		} catch (OperationFailedException e) {
 			logger.error("Sign in operation failed.", e);
@@ -182,4 +193,28 @@ public class AccountLoginActivity extends ExitMenuActivity implements
 		}
 
 	}
+	
+	/*Nhom 3
+	private void switchToAccLogin() {
+	    AccountLoginFragment fragA = (AccountLoginFragment) getSupportFragmentManager().findFragmentByTag(TAG_ACC_LOGIN);
+	    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+	    fragmentTransaction.detach(getSupportFragmentManager().findFragmentByTag(TAG_ACC_REG));
+	    fragmentTransaction.attach(fragA);
+	    fragmentTransaction.addToBackStack(null);
+
+	    fragmentTransaction.commitAllowingStateLoss();
+	    getSupportFragmentManager().executePendingTransactions();
+	}
+	
+	private void switchToAccReg() {
+		AccountRegisterFragment fragA = (AccountRegisterFragment) getSupportFragmentManager().findFragmentByTag(TAG_ACC_REG);
+	    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+	    fragmentTransaction.detach(getSupportFragmentManager().findFragmentByTag(TAG_ACC_LOGIN));
+	    fragmentTransaction.attach(fragA);
+	    fragmentTransaction.addToBackStack(null);
+
+	    fragmentTransaction.commitAllowingStateLoss();
+	    getSupportFragmentManager().executePendingTransactions();
+	}
+	*/
 }

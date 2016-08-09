@@ -4,12 +4,14 @@ import java.util.*;
 
 import net.java.sip.communicator.service.callhistory.*;
 import net.java.sip.communicator.service.metahistory.*;
+import net.java.sip.communicator.service.protocol.jabber.JabberAccountRegistration;
 
 import org.jitsi.android.JitsiApplication;
 import org.jitsi.android.gui.AndroidGUIActivator;
 import org.jitsi.android.gui.util.AndroidCallUtil;
 import org.jitsi.service.osgi.OSGiActivity;
 
+import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -23,6 +25,9 @@ public class CallHistoryActivity extends OSGiActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
+		//net.java.sip.communicator.service.protocol.jabber.JabberAccountRegistration aa = new JabberAccountRegistration();
+		//aa.set
+		
 		setContentView(R.layout.act_callhistory);
 		ListView list = (ListView) findViewById(R.id.callHListView);
 		CallHistoryAdapter adapter;

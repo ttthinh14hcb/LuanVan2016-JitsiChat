@@ -52,9 +52,9 @@ public class SipSettings
                 getString(R.string.pref_cat_sip_ssl_protocols));
 
         String configuredProtocols = Arrays.toString(
-                ConfigurationUtils.getEnabledSslProtocols());
+        		net.java.sip.communicator.util.ConfigurationUtils.getEnabledSslProtocols());
 
-        for(String protocol : ConfigurationUtils.getAvailableSslProtocols())
+        for(String protocol : net.java.sip.communicator.util.ConfigurationUtils.getAvailableSslProtocols())
         {
             CheckBoxPreference cbPRef = new CheckBoxPreference(this);
             cbPRef.setTitle(protocol);

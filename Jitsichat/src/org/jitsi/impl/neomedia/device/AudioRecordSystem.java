@@ -37,7 +37,6 @@ import org.jitsi.service.neomedia.codec.*;
  *
  * @author Lyubomir Marinov
  */
-@SuppressWarnings("unused")
 public class AudioRecordSystem
     extends AudioSystem
 {

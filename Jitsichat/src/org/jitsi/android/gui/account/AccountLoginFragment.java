@@ -19,11 +19,18 @@ package org.jitsi.android.gui.account;
 
 import java.util.*;
 
+import net.java.sip.communicator.service.gui.AccountRegistrationWizard;
 import net.java.sip.communicator.service.protocol.*;
+import net.java.sip.communicator.util.Logger;
 
+import org.jitsi.android.gui.Jitsi;
 //import org.jitsi.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 import android.accounts.*;
 import android.accounts.Account;
@@ -36,256 +43,237 @@ import android.view.*;
 import android.widget.*;
 
 import nhom3.jitsi.*;
+
 /**
  * The <tt>AccountLoginFragment</tt> is used for creating new account, but can
  * be also used to obtain user credentials. In order to do that parent
  * <tt>Activity</tt> must implement {@link AccountLoginListener}.
- *
+ * 
  * @author Yana Stamcheva
  * @author Pawel Domas
  */
-public class AccountLoginFragment
-    extends OSGiFragment
-{
-    /**
-     * The username property name.
-     */
-    public static final String ARG_USERNAME = "Username";
+public class AccountLoginFragment extends OSGiFragment {
+	/**
+	 * The username property name.
+	 */
+	public static final String ARG_USERNAME = "Username";
 
-    /**
-     * The password property name.
-     */
-    public static final String ARG_PASSWORD = "Password";
+	/**
+	 * The password property name.
+	 */
+	public static final String ARG_PASSWORD = "Password";
 
-    /**
-     * The listener parent Activity that will be notified when user enters
-     * login and password.
-     */
-    private AccountLoginListener loginListener;
+	/**
+	 * The listener parent Activity that will be notified when user enters login
+	 * and password.
+	 */
+	private AccountLoginListener loginListener;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 
-        if(activity instanceof AccountLoginListener)
-        {
-            this.loginListener = (AccountLoginListener)activity;
-        }
-        else
-        {
-            throw new RuntimeException("Account login listener unspecified");
-        }
-    }
+		if (activity instanceof AccountLoginListener) {
+			this.loginListener = (AccountLoginListener) activity;
+		} else {
+			throw new RuntimeException("Account login listener unspecified");
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onDetach()
-    {
-        super.onDetach();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onDetach() {
+		super.onDetach();
 
-        loginListener = null;
-    }
+		loginListener = null;
+	}
 
-    /**
-     *  {@inheritDoc}
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        View content = inflater.inflate(R.layout.new_account, container, false);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View content = inflater.inflate(R.layout.new_account, container, false);
 
-        Spinner spinner = (Spinner) content.findViewById(R.id.networkSpinner);
+		Spinner spinner = (Spinner) content.findViewById(R.id.networkSpinner);
 
-        ArrayAdapter<CharSequence> adapter
-                = ArrayAdapter.createFromResource(
-                        getActivity(),
-                        R.array.networks_array,
-                        R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(R.layout.dropdown_spinner_item);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				getActivity(), R.array.networks_array,
+				R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(R.layout.dropdown_spinner_item);
 
-        spinner.setAdapter(adapter);
+		spinner.setAdapter(adapter);
 
-        initSignInButton(content);
-        initSignUpButton(content);
-        
-        Bundle extras = getArguments();
-        if (extras != null)
-        {
-            String username = extras.getString(ARG_USERNAME);
+		initSignInButton(content);
+		initSignUpButton(content);
 
-            if (username != null && username.length() > 0)
-            {
-                ViewUtil.setTextViewValue(
-                        container, R.id.usernameField, username);
-            }
+		Bundle extras = getArguments();
+		if (extras != null) {
+			String username = extras.getString(ARG_USERNAME);
 
-            String password = extras.getString(ARG_PASSWORD);
+			if (username != null && username.length() > 0) {
+				ViewUtil.setTextViewValue(container, R.id.usernameField,
+						username);
+			}
 
-            if (password != null && password.length() > 0)
-            {
-                ViewUtil.setTextViewValue(
-                        content, R.id.passwordField, password);
-            }
-        }
+			String password = extras.getString(ARG_PASSWORD);
 
-        return content;
-    }
+			if (password != null && password.length() > 0) {
+				ViewUtil.setTextViewValue(content, R.id.passwordField, password);
+			}
+		}
 
-    /**
-     * Initializes the sign in button.
-     */
-    private void initSignInButton(final View content)
-    {
-        final Button signInButton
-            = (Button) content.findViewById(R.id.act_signInButton);
-        signInButton.setEnabled(true);
+		return content;
+	}
 
-        signInButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                final Spinner spinner
-                    = (Spinner) content.findViewById(R.id.networkSpinner);
-                final EditText userNameField
-                    = (EditText) content.findViewById(R.id.usernameField);
-                final EditText passwordField
-                    = (EditText) content.findViewById(R.id.passwordField);
+	/**
+	 * Initializes the sign in button.
+	 */
+	private void initSignInButton(final View content) {
+		final Button signInButton = (Button) content
+				.findViewById(R.id.act_signInButton);
+		signInButton.setEnabled(true);
 
-                // Translate network label to network value
-                String[] networkValues
-                        = getResources().getStringArray(
-                                R.array.networks_array_values);
-                String selectedNetwork
-                        = networkValues[spinner.getSelectedItemPosition()];
+		signInButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				final Spinner spinner = (Spinner) content
+						.findViewById(R.id.networkSpinner);
+				final EditText userNameField = (EditText) content
+						.findViewById(R.id.usernameField);
+				final EditText passwordField = (EditText) content
+						.findViewById(R.id.passwordField);
 
-                String login = userNameField.getText().toString();
-                String password = passwordField.getText().toString();
+				// Translate network label to network value
+				String[] networkValues = getResources().getStringArray(
+						R.array.networks_array_values);
+				String selectedNetwork = networkValues[spinner
+						.getSelectedItemPosition()];
 
-                loginListener.onLoginPerformed(login,
-                                               password,
-                                               selectedNetwork);
-            }
-        });
-    }
-    
-    /**
-     * Thinh - 
-     * Initializes the sign up button.
-     */
-    private void initSignUpButton(final View content)
-    {
-        final Button signInButton
-            = (Button) content.findViewById(R.id.act_signUpButton);
-        signInButton.setEnabled(true);
+				String login = userNameField.getText().toString();
+				String password = passwordField.getText().toString();
 
-        signInButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-            	Uri uri = Uri.parse("https://www.xmpp.jp/signup"); // missing 'http://' will cause crashed
-            	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            	startActivity(intent);
+				loginListener
+						.onLoginPerformed(login, password, selectedNetwork);
+			}
+		});
+	}
 
-            }
-        });
-    }
+	/**
+	 * Thinh - Initializes the sign up button.
+	 */
+	private void initSignUpButton(final View content) {
+		final Button signInButton = (Button) content
+				.findViewById(R.id.act_signUpButton);
+		signInButton.setEnabled(true);
 
-    /**
-     * Stores the given <tt>protocolProvider</tt> data in the android system
-     * accounts.
-     *
-     * @param protocolProvider the <tt>ProtocolProviderService</tt>,
-     * corresponding to the account to store
-     */
-    @SuppressWarnings("unused")
-	private void storeAndroidAccount(ProtocolProviderService protocolProvider)
-    {
-        Map<String, String> accountProps
-            = protocolProvider.getAccountID().getAccountProperties();
+		signInButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
 
-        String username = accountProps.get(ProtocolProviderFactory.USER_ID);
+				/*
+				 * Uri uri = Uri .parse(
+				 * "https://192.168.0.101:9090/plugins/registration/sign-up.jsp"
+				 * ); Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				 * startActivity(intent);
+				 */
 
-        Account account
-            = new Account(  username,
-                            getString(R.string.ACCOUNT_TYPE));
+				Intent intent = new Intent(content.getContext(),
+						AccountRegisterActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
 
-        final Bundle extraData = new Bundle();
-        for (String key : accountProps.keySet())
-        {
-            extraData.putString(key, accountProps.get(key));
-        }
+	/**
+	 * Stores the given <tt>protocolProvider</tt> data in the android system
+	 * accounts.
+	 * 
+	 * @param protocolProvider
+	 *            the <tt>ProtocolProviderService</tt>, corresponding to the
+	 *            account to store
+	 */
+	@SuppressWarnings("unused")
+	private void storeAndroidAccount(ProtocolProviderService protocolProvider) {
+		Map<String, String> accountProps = protocolProvider.getAccountID()
+				.getAccountProperties();
 
-        AccountManager am = AccountManager.get(getActivity());
-        boolean accountCreated
-            = am.addAccountExplicitly(
-                account,
-                accountProps.get(ProtocolProviderFactory.PASSWORD), extraData);
+		String username = accountProps.get(ProtocolProviderFactory.USER_ID);
 
-        Bundle extras = getArguments();
-        if (extras != null)
-        {
-            if (accountCreated)
-            {  //Pass the new account back to the account manager
-                AccountAuthenticatorResponse response
-                    = extras.getParcelable(
-                        AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
+		Account account = new Account(username,
+				getString(R.string.ACCOUNT_TYPE));
 
-                Bundle result = new Bundle();
-                result.putString(   AccountManager.KEY_ACCOUNT_NAME,
-                                    username);
-                result.putString(   AccountManager.KEY_ACCOUNT_TYPE,
-                                    getString(R.string.ACCOUNT_TYPE));
-                result.putAll(extraData);
+		final Bundle extraData = new Bundle();
+		for (String key : accountProps.keySet()) {
+			extraData.putString(key, accountProps.get(key));
+		}
 
-                response.onResult(result);
-            }
-            // TODO: notify about account authentication
-            //finish();
-        }
-    }
+		AccountManager am = AccountManager.get(getActivity());
+		boolean accountCreated = am.addAccountExplicitly(account,
+				accountProps.get(ProtocolProviderFactory.PASSWORD), extraData);
 
-    /**
-     * Creates new <tt>AccountLoginFragment</tt> with optionally filled login
-     * and password fields(pass <tt>null</tt> arguments to omit).
-     *
-     * @param login optional login text that will be filled on the form.
-     * @param password optional password text that will be filled on the form.
-     *
-     * @return new instance of parametrized <tt>AccountLoginFragment</tt>.
-     */
-    public static AccountLoginFragment createInstance(String login,
-                                                      String password)
-    {
-        AccountLoginFragment fragment = new AccountLoginFragment();
+		Bundle extras = getArguments();
+		if (extras != null) {
+			if (accountCreated) { // Pass the new account back to the account
+									// manager
+				AccountAuthenticatorResponse response = extras
+						.getParcelable(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
-        Bundle args = new Bundle();
-        args.putString(ARG_USERNAME, login);
-        args.putString(ARG_PASSWORD, password);
+				Bundle result = new Bundle();
+				result.putString(AccountManager.KEY_ACCOUNT_NAME, username);
+				result.putString(AccountManager.KEY_ACCOUNT_TYPE,
+						getString(R.string.ACCOUNT_TYPE));
+				result.putAll(extraData);
 
-        return fragment;
-    }
+				response.onResult(result);
+			}
+			// TODO: notify about account authentication
+			// finish();
+		}
+	}
 
-    /**
-     * The interface is used to notify listener when user click the sign-in
-     * button.
-     */
-    public interface AccountLoginListener
-    {
-        /**
-         * Method is called when user click the sign in button.
-         * @param login the login entered by the user.
-         * @param password the password entered by the user.
-         * @param network the network name selected by the user.
-         */
-        public void onLoginPerformed( String login,
-                                      String password,
-                                      String network);
-    }
+	/**
+	 * Creates new <tt>AccountLoginFragment</tt> with optionally filled login
+	 * and password fields(pass <tt>null</tt> arguments to omit).
+	 * 
+	 * @param login
+	 *            optional login text that will be filled on the form.
+	 * @param password
+	 *            optional password text that will be filled on the form.
+	 * 
+	 * @return new instance of parametrized <tt>AccountLoginFragment</tt>.
+	 */
+	public static AccountLoginFragment createInstance(String login,
+			String password) {
+		AccountLoginFragment fragment = new AccountLoginFragment();
+
+		Bundle args = new Bundle();
+		args.putString(ARG_USERNAME, login);
+		args.putString(ARG_PASSWORD, password);
+
+		return fragment;
+	}
+
+	/**
+	 * The interface is used to notify listener when user click the sign-in
+	 * button.
+	 */
+	public interface AccountLoginListener {
+		/**
+		 * Method is called when user click the sign in button.
+		 * 
+		 * @param login
+		 *            the login entered by the user.
+		 * @param password
+		 *            the password entered by the user.
+		 * @param network
+		 *            the network name selected by the user.
+		 */
+		public void onLoginPerformed(String login, String password,
+				String network);
+	}
 }

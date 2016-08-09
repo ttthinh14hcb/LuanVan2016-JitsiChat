@@ -137,7 +137,7 @@ public class VideoHandlerFragment
 
         remoteVideoContainer
             = (ViewGroup) activity.findViewById(R.id.remoteVideoContainer);
-        
+
         localPreviewContainer
             = (ViewGroup) activity.findViewById(R.id.localPreviewContainer);
 
@@ -389,7 +389,7 @@ public class VideoHandlerFragment
         }
         else{
         	/* Xoay Video */
-    		
+    		/*
     		int count = remoteVideoContainer.getChildCount();
         	switch(item.getItemId()){
         	case R.id.rota_left_playback:
@@ -412,7 +412,7 @@ public class VideoHandlerFragment
         		}
         		//remoteVideoContainer.setRotation(remoteVideoContainer.getRotation() + 90f);
         		break;
-        	}
+        	}*/
         	/*--*/
         }
         return super.onOptionsItemSelected(item);
@@ -476,7 +476,7 @@ public class VideoHandlerFragment
 
         OperationSetVideoTelephony osvt
                 = pps.getOperationSet(OperationSetVideoTelephony.class);
-
+        
         if (osvt == null)
             return;
 
@@ -552,6 +552,7 @@ public class VideoHandlerFragment
             if (osvt != null)
                 visualComponent = osvt.getVisualComponent(callPeer);
         }
+        
         handleRemoteVideoEvent(visualComponent, null);
     }
 
@@ -617,6 +618,7 @@ public class VideoHandlerFragment
     private void handleRemoteVideoEvent(final Component visualComponent,
                                         final SizeChangeVideoEvent scve)
     {
+
         if(visualComponent instanceof ViewAccessor)
         {
             logger.trace("Remote video added "+hashCode());
@@ -737,6 +739,7 @@ public class VideoHandlerFragment
     {
         if (remoteVideoView != null)
         {
+        	//remoteVideoView.setRotation(90.0f);//Nhom 3
             ((RemoteVideoLayout)remoteVideoContainer)
                 .setVideoPreferredSize(preferredSize);
 

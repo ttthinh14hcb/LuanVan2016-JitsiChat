@@ -28,6 +28,8 @@ import android.media.audiofx.*;
 
 import android.os.*;
 import android.os.Process;
+import android.util.Log;
+
 import org.jitsi.android.gui.util.*;
 import org.jitsi.impl.neomedia.device.*;
 import org.jitsi.impl.neomedia.jmfext.media.protocol.*;

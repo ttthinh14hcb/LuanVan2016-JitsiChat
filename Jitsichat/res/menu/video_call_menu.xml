@@ -18,4 +18,7 @@
                   android:title="@string/high_video_resolution" />
         </menu>
     </item>
+    <item android:id="@+id/call_record_start"
+          android:title="@string/start_record_call">
+    </item>
 </menu>

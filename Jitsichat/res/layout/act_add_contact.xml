@@ -50,6 +50,7 @@
             android:layout_height="@dimen/item_height"
             android:id="@+id/edit_ContactName"
             android:inputType="text"
+            android:padding="10dp"
             android:layout_marginBottom="@dimen/between_padding"/>
     <TextView
             style="@style/MediumFont"
@@ -65,6 +66,7 @@
             android:layout_height="@dimen/item_height"
             android:id="@+id/edit_DisplayName"
             android:inputType="text"
+            android:padding="10dp"
             android:layout_marginBottom="@dimen/between_padding"/>
     <Button
             android:layout_width="wrap_content"

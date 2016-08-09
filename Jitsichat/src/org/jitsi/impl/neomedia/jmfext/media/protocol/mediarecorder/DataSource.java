@@ -39,6 +39,7 @@ import android.hardware.*;
 import android.media.*;
 import android.net.*;
 import android.os.Process;
+import android.util.Log;
 import android.view.*;
 
 /**
@@ -440,6 +441,7 @@ public class DataSource
                 this.mediaRecorder = mediaRecorder;
                 this.camera = camera;
                 mediaRecorder.start();
+                Log.e("MEDIA_REC_CHECK", "MEDIA_REC_CHECK");
             }
             catch (RuntimeException re)
             {

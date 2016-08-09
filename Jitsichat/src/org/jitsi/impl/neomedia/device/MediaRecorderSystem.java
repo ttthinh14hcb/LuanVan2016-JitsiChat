@@ -19,7 +19,6 @@ package org.jitsi.impl.neomedia.device;
 
 import nhom3.jitsi.*;
 import java.util.*;
-import java.util.List;
 
 import javax.media.*;
 
@@ -28,7 +27,7 @@ import android.hardware.*;
 
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+//import org.jitsi.*;
 import org.jitsi.android.*;
 import org.jitsi.android.util.java.awt.*;
 import org.jitsi.impl.neomedia.codec.video.h264.*;
@@ -102,7 +101,8 @@ public class MediaRecorderSystem
         return s.toString();
     }
 
-    protected void doInitialize()
+    @SuppressWarnings("deprecation")
+	protected void doInitialize()
         throws Exception
     {
         int cameraCount = Camera.getNumberOfCameras();
