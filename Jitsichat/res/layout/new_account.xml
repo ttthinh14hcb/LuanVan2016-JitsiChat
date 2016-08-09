@@ -54,18 +54,17 @@
 	        android:weightSum="2">          
         
 	        <Button
-	            style="?android:attr/buttonBarButtonStyle"
 	            android:id="@+id/act_signInButton"
-	            android:text="@string/service_gui_SIGN_IN"
-	            android:focusable="true"
-	            android:textColor="#ffffff"
-	            android:layout_width="0dp"
+	            style="?android:attr/buttonBarButtonStyle"
+	            android:layout_width="match_parent"
 	            android:layout_height="@dimen/item_height"
 	            android:layout_gravity="center_horizontal"
+	            android:layout_marginLeft="2dp"
+	            android:layout_marginRight="2dp"
 	            android:background="@drawable/signin_button"
-	            android:layout_weight="1"
-		        android:layout_marginLeft="2dp"
-		        android:layout_marginRight="2dp"/>
+	            android:focusable="true"
+	            android:text="@string/service_gui_SIGN_IN"
+	            android:textColor="#ffffff" />
 	        
 	        <!-- Button
 	            style="?android:attr/buttonBarButtonStyle"
