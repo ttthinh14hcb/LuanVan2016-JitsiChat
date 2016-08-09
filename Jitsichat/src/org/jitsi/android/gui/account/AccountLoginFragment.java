@@ -111,7 +111,7 @@ public class AccountLoginFragment extends OSGiFragment {
 		spinner.setAdapter(adapter);
 
 		initSignInButton(content);
-		initSignUpButton(content);
+		//initSignUpButton(content);
 
 		Bundle extras = getArguments();
 		if (extras != null) {
@@ -165,8 +165,8 @@ public class AccountLoginFragment extends OSGiFragment {
 	}
 
 	/**
-	 * Thinh - Initializes the sign up button.
-	 */
+	 * Nhom3 - Initializes the sign up button.
+	 *
 	private void initSignUpButton(final View content) {
 		final Button signInButton = (Button) content
 				.findViewById(R.id.act_signUpButton);
@@ -180,14 +180,14 @@ public class AccountLoginFragment extends OSGiFragment {
 				 * "https://192.168.0.101:9090/plugins/registration/sign-up.jsp"
 				 * ); Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				 * startActivity(intent);
-				 */
+				 *
 
 				Intent intent = new Intent(content.getContext(),
 						AccountRegisterActivity.class);
 				startActivity(intent);
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Stores the given <tt>protocolProvider</tt> data in the android system

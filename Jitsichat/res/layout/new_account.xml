@@ -59,7 +59,7 @@
 	            android:text="@string/service_gui_SIGN_IN"
 	            android:focusable="true"
 	            android:textColor="#ffffff"
-	            android:layout_width="wrap_content"
+	            android:layout_width="0dp"
 	            android:layout_height="@dimen/item_height"
 	            android:layout_gravity="center_horizontal"
 	            android:background="@drawable/signin_button"
@@ -67,7 +67,7 @@
 		        android:layout_marginLeft="2dp"
 		        android:layout_marginRight="2dp"/>
 	        
-	        <Button
+	        <!-- Button
 	            style="?android:attr/buttonBarButtonStyle"
 	            android:id="@+id/act_signUpButton"
 	            android:text="@string/service_gui_SIGN_UP"
@@ -79,7 +79,7 @@
 	            android:background="@drawable/signin_button"
 	            android:layout_weight="1"
 		        android:layout_marginLeft="2dp"
-		        android:layout_marginRight="2dp"/>
+		        android:layout_marginRight="2dp"/-->
         </LinearLayout>
         
 </LinearLayout>
